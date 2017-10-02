@@ -10,6 +10,9 @@ public class HelloAgentCyclic extends Agent{
 		  addBehaviour(new CyclicBehaviour() {
 	    public void action(){
 		ACLMessage msgRx=receive();
+		while(true){
+			
+		}
 		
 		if(msgRx!=null){
 		     System.out.println(msgRx);
@@ -21,7 +24,7 @@ public class HelloAgentCyclic extends Agent{
 		else{
 		block();
 		}
-	    }
+	      }
 	    });
 		
 		
