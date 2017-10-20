@@ -24,4 +24,5 @@ public class WakerBehaviourAgent extends Agent {
 			System.out.println("WOW I'm late");
 		}
 		
-	} }
+	}
+	 }

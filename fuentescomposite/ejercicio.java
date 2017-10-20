@@ -4,10 +4,11 @@ import jade.core.behaviours.*;
 
 public class ejercicio extends Agent{
 	private Micomportamiento c1;
-	private Micomportamiento c2;
+	private Micomportamiento2 c2;
+	private int n=5;
 	protected void setup(){
-		c1= new Micomportamiento(c2,"c1");
-		c2= new Micomportamiento(c1,"c2");
+		c1= new Micomportamiento();
+		c2= new Micomportamiento2();
 		addBehaviour(c1);
 		addBehaviour(c2);
 	}
@@ -16,26 +17,21 @@ public class ejercicio extends Agent{
     }
 	private class Micomportamiento extends Behaviour{
 		private int NumeroEjecuciones;
-		private Micomportamiento out_comportamiento;
 		private int ejecuciones;
-		private String nombre;
-		private Micomportamiento(Micomportamiento c,String n){
-			super();
-			out_comportamiento=c;
-			nombre=n;
-		}
+
 		public void onStart(){
 			NumeroEjecuciones=(int) (Math.random() * 100);
 			ejecuciones=0;
-			System.out.println("NumeroEjecuciones de "+nombre+" es: "+NumeroEjecuciones);
+			System.out.println("NumeroEjecuciones de 1 es: "+NumeroEjecuciones);
 
 		}
 		public void action(){
 			ejecuciones++;
-			System.out.println("Executing ejecucion "+ejecuciones+ " de Behaviour "+ nombre);
+			System.out.println("Executing ejecucion "+ejecuciones+ " de Behaviour 1 ");
 			if(ejecuciones==NumeroEjecuciones/2){
-				out_comportamiento.block();
-				System.out.println("El comportamiento "+nombre+" ha bloqueado al otro");
+				System.out.println("BLOQUEANDO");
+				c2.block();
+				System.out.println("El comportamiento 1 ha bloqueado al comportamiento 2");
 			}
 			
 		}
@@ -43,8 +39,60 @@ public class ejercicio extends Agent{
 			return ejecuciones==NumeroEjecuciones;
 		}
 		public int onEnd(){
-           System.out.println("Terminado");
-           doDelete();
+			System.out.println("EL N ES; "+n);
+			n--;
+			if(n==0){
+			System.out.println("Terminado");
+           	doDelete();
+			}else{
+				removeBehaviour(c2);
+				reset();
+				c2.reset();
+				addBehaviour(c1);
+				addBehaviour(c2);
+			}
+           
+            return 0;
+        }
+
+	}
+	private class Micomportamiento2 extends Behaviour{
+		private int NumeroEjecuciones;
+		private int ejecuciones;
+		
+		public void onStart(){
+			NumeroEjecuciones=(int) (Math.random() * 100);
+			ejecuciones=0;
+			System.out.println("NumeroEjecuciones de 2 es: "+NumeroEjecuciones);
+
+		}
+		public void action(){
+			ejecuciones++;
+			System.out.println("Executing ejecucion "+ejecuciones+ " de Behaviour 2");
+			if(ejecuciones==NumeroEjecuciones/2){
+				System.out.println("BLOQUEANDO");
+				c1.block();
+				System.out.println("El comportamiento 2 ha bloqueado al comportamiento 1");
+			}
+			
+		}
+		public final boolean done(){
+			return ejecuciones==NumeroEjecuciones;
+		}
+		public int onEnd(){
+			System.out.println("EL N ES; "+n);
+			n--;
+			if(n==0){
+			System.out.println("Terminado");
+           	doDelete();
+			}else{
+				removeBehaviour(c1);
+				reset();
+				c1.reset();
+				addBehaviour(c1);
+				addBehaviour(c2);
+			}
+           
             return 0;
         }
 
@@ -52,6 +100,6 @@ public class ejercicio extends Agent{
 
 
 
-
+//si no queremos que se ejecute el onstart solo addbehaviour si queremos que se ejecute reset+addbehaviour
 
 }
